@@ -1,0 +1,5 @@
+services:
+  - type: web
+    name: crypto-backend
+    env: docker
+    dockerfilePath: backend/Dockerfile

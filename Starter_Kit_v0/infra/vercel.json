@@ -1,0 +1,1 @@
+{ "version": 2, "name": "crypto-panel", "builds": [{ "src": "frontend/index.html", "use": "@vercel/static" }] }
