@@ -14,3 +14,71 @@ def summary():
 @app.get("/signals")
 def signals():
     return []
+
+# --- Signals API (in-memory) --------------------------------------------------
+from typing import List, Optional
+from pydantic import BaseModel
+from datetime import datetime
+
+# Si 'app' no existe (por si este archivo se ejecuta aislado), lo creamos.
+try:
+    app  # type: ignore[name-defined]
+except NameError:  # pragma: no cover
+    from fastapi import FastAPI
+    app = FastAPI()
+
+# Modelo de señal
+class Signal(BaseModel):
+    symbol: str           # p.ej. "AVAXUSDT"
+    side: str             # "buy" o "sell"
+    price: float
+    confidence: Optional[float] = None
+    note: Optional[str] = None
+    ts: datetime          # timestamp ISO (ej. 2025-08-11T14:28:00Z)
+
+# Base en memoria (temporal). Luego la pasamos a Postgres/Supabase.
+_signals_db: List[Signal] = []
+
+@app.get("/signals", response_model=List[Signal])
+def get_signals() -> List[Signal]:
+    return _signals_db
+
+@app.post("/signals", response_model=Signal)
+def add_signal(signal: Signal) -> Signal:
+    _signals_db.append(signal)
+    return signal
+# ------------------------------------------------------------------------------
+
+# --- Signals API (in-memory) --------------------------------------------------
+from typing import List, Optional
+from pydantic import BaseModel
+from datetime import datetime
+
+# Si 'app' no existe (por si este archivo se ejecuta aislado), lo creamos.
+try:
+    app  # type: ignore[name-defined]
+except NameError:  # pragma: no cover
+    from fastapi import FastAPI
+    app = FastAPI()
+
+# Modelo de señal
+class Signal(BaseModel):
+    symbol: str           # p.ej. "AVAXUSDT"
+    side: str             # "buy" o "sell"
+    price: float
+    confidence: Optional[float] = None
+    note: Optional[str] = None
+    ts: datetime          # timestamp ISO (ej. 2025-08-11T14:28:00Z)
+
+# Base en memoria (temporal). Luego la pasamos a Postgres/Supabase.
+_signals_db: List[Signal] = []
+
+@app.get("/signals", response_model=List[Signal])
+def get_signals() -> List[Signal]:
+    return _signals_db
+
+@app.post("/signals", response_model=Signal)
+def add_signal(signal: Signal) -> Signal:
+    _signals_db.append(signal)
+    return signal
+# ------------------------------------------------------------------------------
