@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: crypto-api
+    runtime: python
+    plan: free
+    autoDeploy: true
+    region: singapur  # puedes cambiarlo a oregon, ohio, singapore, etc.
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SUPABASE_URL
+        sync: false   # se define como Secret en el panel de Render
+      - key: SUPABASE_KEY
+        sync: false   # se define como Secret en el panel de Render
+    healthCheckPath: /health
