@@ -1,16 +1,3 @@
-__pycache__/
-*.pyc
-.venv/
-venv/
-__pycache__/
-cd ~/Desktop/crypto-test
-
-# Si aún no es repo:
-git init
-git branch -M main
-
-# Crea .gitignore (muy importante)
-cat > .gitignore << 'EOF'
 # Python
 __pycache__/
 *.pyc
