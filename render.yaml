@@ -4,7 +4,7 @@ services:
     runtime: python
     plan: free
     autoDeploy: true
-    region: singapur  # puedes cambiarlo a oregon, ohio, singapore, etc.
+    region: singapore  # puedes cambiarlo a oregon, ohio, singapore, etc.
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
     envVars:
