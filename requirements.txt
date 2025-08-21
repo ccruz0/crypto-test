@@ -4,4 +4,4 @@ pydantic
 python-dotenv
 psycopg2-binary==2.9.9
 supabase
-psycopg2-binary
+

@@ -1,4 +1,21 @@
-.DS_Store
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
 
+# Entornos y secretos
+.env
+.env.*
+*.key
+*.pem
+
+# Mac / Editor
 .DS_Store
-*.save
+.vscode/
+.idea/
+
+# Frontend (si algún día usas Node)
+node_modules/
+dist/
+build/

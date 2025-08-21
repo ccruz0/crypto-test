@@ -1,40 +1,111 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Panel</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(180deg, #0b1020, #0a0f1e);
-            color: white;
-            text-align: center;
-            padding: 50px;
-        }
-        h1 {
-            color: #5ee3ff;
-        }
-        p {
-            font-size: 18px;
-            color: #9aa3bf;
-        }
-        .btn {
-            background: #5ee3ff;
-            color: #0b1020;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .btn:hover {
-            background: #39d98a;
-        }
-    </style>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+  </style>
 </head>
 <body>
-    <h1>Bienvenido a Crypto Panel</h1>
-    <p>Tu panel para seguir el mercado de criptomonedas en tiempo real.</p>
-    <a href="#" class="btn">Entrar</a>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="es"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta charset="utf-8" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;title&gt;Crypto Panel — Starter Kit&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;style&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>:root {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>--bg:#0b1020; --card:#121733; --ink:#e7eafd; --muted:#9aa3bf;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>--accent:#5ee3ff; --ok:#39d98a; --bad:#ff6b6b;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>* { box-sizing:border-box }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>body {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>margin:0; font-family:system-ui, -apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>background:linear-gradient(180deg,#0b1020 0%,#0f1e40 100%);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>color:var(--ink);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>header {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>padding:24px 20px; border-bottom:1px solid rgba(255,255,255,.08);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>display:flex; gap:16px; align-items:center; justify-content:space-between;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.brand { font-weight:700; letter-spacing:3px }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.grid {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>max-width:1100px; margin:24px auto; display:grid; grid-template-columns:repeat(12,1fr);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>gap:16px; padding:0 16px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.card {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>grid-column:span 12; background:var(--card); border:1px solid rgba(255,255,255,.08);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>border-radius:14px; padding:16px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>@media (min-width:900px) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.span6 { grid-column:span 6 }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.span4 { grid-column:span 4 }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.title { font-size:15px; font-weight:600; margin:0 0 8px }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.muted { color:var(--muted); font-size:13px }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>pre {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>margin:8px 0 0; white-space:pre-wrap; word-wrap:anywhere;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>background:#0c1226; border-radius:10px; padding:12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>border:1px solid rgba(255,255,255,.06);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.row { display:flex; gap:10px; flex-wrap:wrap }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>button,input {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>border-radius:10px; border:1px solid rgba(255,255,255,.12);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>background:#0e1530; color:var(--ink); padding:10px 12px; font-size:14px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>button { cursor:pointer }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.ok { color:var(--ok) }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.bad { color:var(--bad) }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>a { color:var(--accent); text-decoration:none }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>footer { padding:24px 20px; color:var(--muted); text-align:center; font-size:12px }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;header&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="brand"&gt;Crypto Panel&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div&gt;🚀 Starter Kit&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/header&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="grid"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="card span12"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="title"&gt;📊 Señales en vivo&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div id="signals"&gt;Cargando...&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;footer&gt;© 2025 Crypto Panel — Demo&lt;/footer&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Cambia esta URL si tu API está en Render</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// const API_BASE = "https://crypto-starter-kit.onrender.com";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const API_BASE = "http://127.0.0.1:8000";</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>async function loadSignals() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const res = await fetch(API_BASE + "/signals/live");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (!res.ok) throw new Error("HTTP " + res.status);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const data = await res.json();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById("signals").innerHTML =</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>'&lt;pre&gt;' + JSON.stringify(data, null, 2) + '&lt;/pre&gt;';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>} catch (err) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById("signals").innerHTML =</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>'&lt;span class="bad"&gt;❌ Error al conectar con el backend&lt;/span&gt;';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>console.error(err);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>loadSignals();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>setInterval(loadSignals, 5000); // refresca cada 5s</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
 </body>
 </html>

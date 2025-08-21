@@ -1,132 +1,99 @@
-import os
-from typing import List, Optional
-from datetime import datetime
-
-from fastapi import FastAPI, HTTPException
+# backend/app/main.py
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from typing import List, Optional
+import os
+from dotenv import load_dotenv
 
-import psycopg2
-from psycopg2.pool import SimpleConnectionPool
+# --- Supabase client ---
+from supabase import create_client
 
-# ---------- Config ----------
-DB_URL = os.getenv("DATABASE_URL") or os.getenv("SUPABASE_DB_URL")
-if not DB_URL:
-    raise RuntimeError("DATABASE_URL (o SUPABASE_DB_URL) no está definido")
+load_dotenv()
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+if not SUPABASE_URL or not SUPABASE_KEY:
+    raise RuntimeError("Faltan SUPABASE_URL / SUPABASE_KEY en .env")
+
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 app = FastAPI(title="Crypto Bot Starter Kit v0")
 
-pool: SimpleConnectionPool | None = None
-
+# CORS para permitir que el index.html cargado en el navegador consulte al backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],   # si quieres restringir, pon tu dominio aquí
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ---------- Modelos ----------
 class Signal(BaseModel):
     symbol: str
-    side: str          # "buy" | "sell"
+    side: str
     price: float
     confidence: Optional[float] = None
     note: Optional[str] = None
-    ts: Optional[datetime] = None
+    ts: Optional[str] = None
+    created_at: Optional[str] = None
 
-
-# ---------- Helpers ----------
-def db_conn():
-    """Obtiene una conexión del pool como context manager."""
-    assert pool is not None
-    conn = pool.getconn()
-    try:
-        yield conn
-    finally:
-        pool.putconn(conn)
-
-
-def exec_query(sql: str, params: tuple | None = None, fetch: str | None = None):
-    """Ejecuta una consulta de forma segura y opcionalmente recupera resultados."""
-    # pequeño wrapper práctico
-    for conn in db_conn():
-        with conn, conn.cursor() as cur:
-            cur.execute(sql, params or ())
-            if fetch == "one":
-                return cur.fetchone()
-            if fetch == "all":
-                return cur.fetchall()
-            return None
-
-
-# ---------- Ciclo de vida ----------
-@app.on_event("startup")
-def on_startup():
-    global pool
-    # Pool de conexiones (ajusta maxconn si lo necesitas)
-    pool = SimpleConnectionPool(minconn=1, maxconn=5, dsn=DB_URL)
-
-    # Extensión y tabla (id UUID + timestamp)
-    exec_query("CREATE EXTENSION IF NOT EXISTS pgcrypto;")
-    exec_query(
-        """
-        CREATE TABLE IF NOT EXISTS signals (
-            id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-            symbol TEXT,
-            side TEXT,
-            price DOUBLE PRECISION,
-            confidence DOUBLE PRECISION,
-            note TEXT,
-            ts TIMESTAMPTZ DEFAULT NOW()
-        );
-        """
-    )
-
-
-@app.on_event("shutdown")
-def on_shutdown():
-    global pool
-    if pool:
-        pool.closeall()
-        pool = None
-
-
-# ---------- Rutas básicas ----------
+# ---------- Rutas existentes simples ----------
 @app.get("/health")
 def health():
-    return {"status": "ok", "env": os.getenv("RENDER", "render")}
-
+    return {"status": "ok", "env": os.getenv("RENDER", "false") == "true"}
 
 @app.get("/summary")
 def summary():
     return {"pnl": {"daily": 0, "weekly": 0}, "open_orders": [], "recent_fills": []}
 
-
-# ---------- API de señales ----------
 @app.get("/signals", response_model=List[Signal])
-def get_signals():
-    rows = exec_query(
-        "SELECT symbol, side, price, confidence, note, ts FROM signals ORDER BY ts DESC",
-        fetch="all",
-    ) or []
-    return [
-        Signal(
-            symbol=r[0], side=r[1], price=r[2],
-            confidence=r[3], note=r[4], ts=r[5]
+def get_signals(limit: int = 50):
+    try:
+        resp = (
+            supabase.table("signals")
+            .select("symbol,side,price,confidence,note,ts,created_at")
+            .order("created_at", desc=True)
+            .limit(limit)
+            .execute()
         )
-        for r in rows
-    ]
-
+        return resp.data or []
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/signals", response_model=Signal)
 def add_signal(signal: Signal):
     if signal.side not in ("buy", "sell"):
         raise HTTPException(status_code=400, detail="side must be 'buy' or 'sell'")
+    try:
+        # Si no viene ts, lo deja nulo; Supabase rellenará created_at por DEFAULT now()
+        payload = signal.model_dump(exclude_none=True)
+        resp = supabase.table("signals").insert(payload).select("*").execute()
+        if not resp.data:
+            raise RuntimeError("Insert returned no data")
+        row = resp.data[0]
+        return Signal(**row)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
-    saved = exec_query(
-        """
-        INSERT INTO signals (symbol, side, price, confidence, note, ts)
-        VALUES (%s, %s, %s, %s, %s, COALESCE(%s, NOW()))
-        RETURNING symbol, side, price, confidence, note, ts
-        """,
-        (signal.symbol, signal.side, signal.price,
-         signal.confidence, signal.note, signal.ts),
-        fetch="one",
-    )
-    return Signal(
-        symbol=saved[0], side=saved[1], price=saved[2],
-        confidence=saved[3], note=saved[4], ts=saved[5]
-    )
+# ---------- NUEVO: /signals/live ----------
+@app.get("/signals/live")
+def signals_live(
+    symbols: Optional[str] = Query(None, description="Lista separada por comas, p.ej. BTC,ETH,SOL"),
+    limit: int = Query(50, ge=1, le=500)
+):
+    """
+    Devuelve las últimas señales desde Supabase.
+    - Si 'symbols' viene, filtra por esos símbolos (ej.: BTC,ETH,SOL).
+    - Ordena por created_at desc y limita 'limit'.
+    """
+    try:
+        q = supabase.table("signals").select("symbol,side,price,confidence,note,ts,created_at")
+        if symbols:
+            wanted = [s.strip().upper() for s in symbols.split(",") if s.strip()]
+            if wanted:
+                q = q.in_("symbol", wanted)
+        resp = q.order("created_at", desc=True).limit(limit).execute()
+        return {"rows": resp.data or []}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
